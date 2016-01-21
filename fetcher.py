@@ -1,9 +1,8 @@
-import os
-import md5
 import sys
 import json
 import base64
 import codecs
+import cleaner
 import urllib3
 import requests
 import requests.packages.urllib3
@@ -55,31 +54,7 @@ def fetcher(bugid):
         bugid += 1
         at_most -= 1
         if at_most <= 0:
-            break;
-
-# remove all empty files
-def remove_empties(dir):
-    target_size = 0
-    for dirpath, dirs, files in os.walk(dir):
-        for file in files: 
-            path = os.path.join(dirpath, file)
-            if os.stat(path).st_size == target_size:
-                os.remove(path)
-                print "Empty File: " + path + " removed."
-
-# remove duplicate files
-def remove_duplicates(dir):
-    unique = []
-    for filename in os.listdir(dir):
-        if os.path.isdir(filename):
-            continue
-        if os.path.isfile(filename):
-            filehash = md5.md5(file(filename).read()).hexdigest()
-        if filehash not in unique: 
-            unique.append(filehash)
-        else: 
-            os.remove(filename)
-            print "Duplicated File: " + filename + " removed."
+            break
 
 if __name__ == '__main__':
     bugid = 600000
@@ -87,5 +62,5 @@ if __name__ == '__main__':
         bugid = int(sys.argv[len(sys.argv)-1])
 
     fetcher(bugid)
-    remove_empties(os.getcwd())
-    remove_duplicates(os.getcwd())
+    cleaner.remove_empties(os.getcwd())
+    cleaner.remove_duplicates(os.getcwd())
