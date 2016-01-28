@@ -1,3 +1,6 @@
+# Just put the logcat files (ending in .txt) on the same folder
+# This program will filter files and output clean_(original name).txt
+
 import os
 import re
 import md5
@@ -42,10 +45,11 @@ def remove_format(dir, subname):
 
         newlines = []
         for l in lines:
+            # NOT taking out timestamp for now
             # take out digits(time stamp) in the beginning of each line
-            temp = re.sub("^[(0-9)|( :.\\-)]+", "", l).strip()
+            # temp = re.sub("^[(0-9)|( :.\\-)]+", "", l).strip()
             # minize continuous spaces to get consistency
-            temp = re.sub("[ ]+", " ", temp).strip()
+            temp = re.sub("[ ]+", " ", l).strip()
             # remove (number) before starting of message
             temp = re.sub("[ ]*\\([ ]*[0-9]+\\):", ":", temp).strip()
             newlines.append(temp)

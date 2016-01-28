@@ -1,3 +1,7 @@
+# This is to fetch logcat from bugzilla (Mozilla)
+# Simply run it and it will get logcat from bug 600000
+# Otherwise, use "python (this file) (starting number)" to fetch files
+
 import sys
 import json
 import base64
