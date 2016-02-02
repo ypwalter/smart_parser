@@ -22,6 +22,7 @@ class SimpleAnalyzer:
         self.error_list = []
         self.warning_list = []
 
+    # TODO: need to adjust to JSON format later
     # Return current de-timestamp error log list
     def return_sorted_error(self):
         self.formatted_error_list = [re.sub("^[(0-9)|( :.\\-)]+", "", s) for s in self.error_list]
@@ -122,4 +123,5 @@ if __name__ == '__main__':
     for filename in os.listdir(current_dir):
         if filename.endswith(".txt") and filename.startswith("cleaned_") and not os.path.isdir(filename):
             lp.parse_file(filename)
+            import pdb; pdb.set_trace()
             print lp.return_sorted_error()
