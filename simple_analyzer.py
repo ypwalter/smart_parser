@@ -13,6 +13,8 @@ class SimpleAnalyzer:
         # with timestamp
         self.error_list = []
         self.warning_list = []
+        self.all_data_list = []
+
         # de-timestamp
         self.formatted_error_list = []
         self.formatted_warning_list = []
@@ -47,6 +49,10 @@ class SimpleAnalyzer:
         warning_counter = collections.Counter(self.warning_list)
         return warning_counter.keys()
 
+    # Return all the log
+    def return_list(self):
+        return self.all_data_list
+
     # Parse the whole file and store analyzed log in lists
     def parse_file(self, filename):
         self.error_list = []
@@ -65,10 +71,12 @@ class SimpleAnalyzer:
             # remove (number) before starting of message
             cleaned_line = re.sub("[ ]*\\([ ]*[0-9]+\\):", ":", cleaned_line).strip()
 
+            self.all_data_list.append(cleaned_line)
+
             for k in self.error_keys:
                 if k in lowercase_line:
                     self.error_list.append(cleaned_line)
-                    print "Error:   " + l
+                    # print "Error:   " + l
                     error = True
                     break
             if error:
@@ -77,7 +85,7 @@ class SimpleAnalyzer:
             for k in self.error_keys_regex:
                 if re.match(k, lowercase_line):
                     self.error_list.append(cleaned_line)
-                    print "Error:   " + l
+                    # print "Error:   " + l
                     error = True
                     break
             if error:
@@ -90,6 +98,7 @@ class SimpleAnalyzer:
 
     # Parse the whole file and store analyzed log in lists
     # Return Warning or Error immediately
+    # TODO: colored output
     def parse_line(self, line):
         # make the line lowercased
         lowercase_line = line.lower()

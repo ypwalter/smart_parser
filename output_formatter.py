@@ -22,6 +22,7 @@ class OutputFormatter:
         elif style == "list_file":
             return self.json_to_file(input1, input2)
 
+    # Convert JSON to list, or returned if not JSON
     def json_to_list(self, error_json, warning_json):
         if error_json == "" or error_json == []:
             return ""
@@ -30,6 +31,7 @@ class OutputFormatter:
         else:
             return ",".join([x for x in error_json[1]['ERROR']])
 
+    # Convert list to JSON, or returned if not list
     def list_to_json(self, error_list, warning_list):
         if error_list == "" or error_list == []:
             return ""
