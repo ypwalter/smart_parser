@@ -1,3 +1,5 @@
+from html_escape import *
+
 class SimpleFeedback:
     def __init__(self, fl, el):
         self.full_list = fl
@@ -6,6 +8,7 @@ class SimpleFeedback:
     # Each row is highlit separately
     def generate_table_row(self, display, number, data):
         ret = ""
+        line_number = str(number)
 
         # Decide if this is important to display in the beginning
         if display:
@@ -16,8 +19,9 @@ class SimpleFeedback:
             highlight = "" 
 
         # put other data in the table
-        ret += "<td width='80px'><input type='radio' name='important-" + str(number) + "'></td>" + \
-               "<td width='80px'><input type='radio' name='useless-" + str(number) + "'></td>" + \
+        he = HTMLEscape()
+        ret += "<td width='80px'><input type='radio' name='" + he.html_escape(data) + "' value='1'></td>" + \
+               "<td width='80px'><input type='radio' name='" + he.html_escape(data) + "' value='-1'></td>" + \
                "<td style='text-align: left;" + highlight + "'>" + data + "</td>" + \
                "</tr>\n"
 
@@ -43,6 +47,7 @@ class SimpleFeedback:
             output_file = template_file.replace(token, html)
             outfile.write(output_file)
 
+# This is an example of simple feedback using simple analyzer and simple server
 if __name__ == "__main__":
     from simple_analyzer import * 
     current_dir = os.getcwd()
@@ -54,4 +59,11 @@ if __name__ == "__main__":
     sf = SimpleFeedback(lp.return_list(), lp.return_error())
     sf.generate_feedback_form()
 
+    import subprocess
+    p = subprocess.Popen(["python", "simple_server.py"])
+ 
+    import webbrowser
+    webbrowser.open("http://localhost:8887/")
 
+    print "Now waiting for feedback form to be finished."
+    p.communicate()

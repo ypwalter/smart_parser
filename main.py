@@ -1,3 +1,5 @@
+import subprocess
+import webbrowser
 from simple_analyzer import *
 from output_formatter import *
 from simple_feedback import *
