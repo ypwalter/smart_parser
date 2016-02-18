@@ -3,8 +3,6 @@ import re
 import sys
 import collections
 
-
-
 class SimpleAnalyzer:
     def __init__(self):
         # rule-based tokens
