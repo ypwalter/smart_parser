@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            button {
+                float: right;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            th, td {
+                padding: 8px;
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+            }
+
+            tr:hover{background-color:#f5f5f5}
+        </style>
+        <script>
+            function reverseDisplay() {
+                var x = document.getElementsByClassName("hidden");
+                var i;
+                for (i = 0; i < x.length; i++) {
+                    if(x[i].style.display == "none") {
+                        x[i].style.display="";
+                    } else {
+                        x[i].style.display="none";
+                    }
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <button id='showhide' onclick="reverseDisplay();">Show / Hidden</button><br />
+        <form method="POST">
+        <table>
+            <tr>
+                <th width=80px>Important</th>
+                <th width=80px>Useless</th>
+                <th>Data</th>
+            </tr>
+            <!--CONTENT-->
+        </table>
+
+        <p style="text-align: center;">
+            <input type="submit">
+        </p>
+
+        </form>
+    </body>
+</html>
