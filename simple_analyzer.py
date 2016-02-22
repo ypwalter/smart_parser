@@ -107,6 +107,8 @@ class SimpleAnalyzer:
         # remove (number) before starting of message
         cleaned_line = re.sub("[ ]*\\([ ]*[0-9]+\\):", ":", cleaned_line).strip()
 
+        self.all_data_list.append(cleaned_line)
+
         for k in self.error_keys:
             if k in lowercase_line:
                 self.error_list.append(cleaned_line)
@@ -132,5 +134,4 @@ if __name__ == '__main__':
     for filename in os.listdir(current_dir):
         if filename.endswith(".txt") and filename.startswith("cleaned_") and not os.path.isdir(filename):
             lp.parse_file(filename)
-            import pdb; pdb.set_trace()
             print lp.return_sorted_error()

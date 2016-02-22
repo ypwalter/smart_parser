@@ -19,8 +19,92 @@
 
             tr:hover{background-color:#f5f5f5}
         </style>
+
+        <script language="javascript" type="text/javascript">
+            var wsUri = "ws://localhost:8080/ws";
+            var websocket;
+            function init() {
+                myWebSocket();
+            }
+
+            function myWebSocket() {
+                websocket = new WebSocket(wsUri);
+                websocket.onopen = function(evt) { 
+                    onOpen(evt)
+                    };
+                websocket.onclose = function(evt) {
+                    onClose(evt)
+                };
+                websocket.onmessage = function(evt) {
+                    onMessage(evt)
+                };
+                websocket.onerror = function(evt) {
+                    onError(evt)
+                };
+            }
+            function onOpen(evt) {
+                doSend(""); 
+            }  
+            function onClose(evt) { 
+                ;
+            }  
+            function onMessage(evt) { 
+                writeToScreen(evt.data); 
+            }  
+            function onError(evt) { 
+                ;
+            }  
+
+            function doSend(message) { 
+                websocket.send(message); 
+            }  
+            function writeToScreen(message) { 
+                document.getElementById('receiving').innerHTML = message + document.getElementById('receiving').innerHTML;
+            }  
+            window.addEventListener("load", init, false);
+        </script>
+
         <script>
+            var refresh = true;
+
+            function refreshPage() {
+                window.location.reload();
+            }
+            var timeout;
+            timeout = setTimeout('refreshPage()', 3000);
+
+            function switchButtons() {
+                var stop_button = document.getElementById("stopRefresh");
+                if(stop_button.style.display == "none") {
+                    stop_button.style.display="";
+                } else {
+                    stop_button.style.display="none";
+                }
+
+                var set_button = document.getElementById("setRefresh");
+                if(set_button.style.display == "none") {
+                    set_button.style.display="";
+                } else {
+                    set_button.style.display="none";
+                }
+            }
+            function setRefresh() {
+                timeout = setTimeout('refreshPage()', 3000);
+                switchButtons();
+                refresh = true;
+            }
+            function stopRefresh() {
+                clearTimeout(timeout);
+                switchButtons();
+                refresh = false;
+            }
+
             function reverseDisplay() {
+                if (refresh == true) {
+                    stopRefresh();
+                }
+
+                // get hidden data elements and make them display
                 var x = document.getElementsByClassName("hidden");
                 var i;
                 for (i = 0; i < x.length; i++) {
@@ -34,16 +118,20 @@
         </script>
     </head>
 
-    <body>
-        <button id='showhide' onclick="reverseDisplay();">Show / Hidden</button><br />
+    <body> 
+        <button id="stopRefresh" onclick="stopRefresh();"    >Stop Refreshing</button>
+        <button id="setRefresh"  onclick="setRefresh();"     style="display: none;">Resume Refreshing</button>
+        <button id="showhide"    onclick="reverseDisplay();" >Show / Hidden</button><br />
         <form method="POST">
         <table>
             <tr>
-                <th width=80px>Important</th>
-                <th width=80px>Useless</th>
+                <th width="80px">Important</th>
+                <th width="80px">Useless</th>
                 <th>Data</th>
             </tr>
             <!--CONTENT-->
+        </table>
+        <table id="receiving">
         </table>
 
         <p style="text-align: center;">
