@@ -42,7 +42,7 @@
                 }
             }
             function setRefresh() {
-                loopsend = setInterval(function(){doSend("");}, 1000);
+                loopsend = setInterval(function(){doSend("");}, 500);
                 switchButtons();
                 refresh = true;
             }
@@ -74,7 +74,8 @@
             function onClose(evt) {;} 
             function onError(evt) {;}  
             function onOpen(evt) {
-                loopsend = setInterval(function(){doSend("");}, 1000);
+                doSend("");
+                setRefresh();
             }  
             function onMessage(evt) { 
                 writeToScreen(evt.data); 
@@ -110,8 +111,8 @@
 
     <body> 
         <button id="exit"        onclick="window.location.href='/exit'">Shutdown Server</button>
-        <button id="stopRefresh" onclick="stopRefresh();"    >Stop Refreshing</button>
-        <button id="setRefresh"  onclick="setRefresh();"     style="display: none;">Resume Refreshing</button>
+        <button id="stopRefresh" onclick="stopRefresh();"    style="display: none;">Stop Refreshing</button>
+        <button id="setRefresh"  onclick="setRefresh();"     >Resume Refreshing</button>
         <button id="showhide"    onclick="reverseDisplay();" >Show / Hidden</button><br />
         <form method="POST">
         <table>
