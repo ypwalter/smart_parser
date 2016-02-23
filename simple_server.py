@@ -47,7 +47,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         if os.path.isfile("fbtmp.html"):
             with open("fbtmp.html", "r") as infile:
                 self.write_message(infile.read())
-            os.remove("fbtmp.html")            
+            os.remove("fbtmp.html")
         # print 'WebSocket received:', message
 
     def on_close(self):

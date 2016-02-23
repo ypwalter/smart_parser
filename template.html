@@ -21,57 +21,10 @@
         </style>
 
         <script language="javascript" type="text/javascript">
+            var refresh = true;
+            var loopsend;
             var wsUri = "ws://localhost:8080/ws";
             var websocket;
-            function init() {
-                myWebSocket();
-            }
-
-            function myWebSocket() {
-                websocket = new WebSocket(wsUri);
-                websocket.onopen = function(evt) { 
-                    onOpen(evt)
-                    };
-                websocket.onclose = function(evt) {
-                    onClose(evt)
-                };
-                websocket.onmessage = function(evt) {
-                    onMessage(evt)
-                };
-                websocket.onerror = function(evt) {
-                    onError(evt)
-                };
-            }
-            function onOpen(evt) {
-                doSend(""); 
-            }  
-            function onClose(evt) { 
-                ;
-            }  
-            function onMessage(evt) { 
-                writeToScreen(evt.data); 
-            }  
-            function onError(evt) { 
-                ;
-            }  
-
-            function doSend(message) { 
-                websocket.send(message); 
-            }  
-            function writeToScreen(message) { 
-                document.getElementById('receiving').innerHTML = message + document.getElementById('receiving').innerHTML;
-            }  
-            window.addEventListener("load", init, false);
-        </script>
-
-        <script>
-            var refresh = true;
-
-            function refreshPage() {
-                window.location.reload();
-            }
-            var timeout;
-            timeout = setTimeout('refreshPage()', 3000);
 
             function switchButtons() {
                 var stop_button = document.getElementById("stopRefresh");
@@ -89,19 +42,56 @@
                 }
             }
             function setRefresh() {
-                timeout = setTimeout('refreshPage()', 3000);
+                loopsend = setInterval(function(){doSend("");}, 1000);
                 switchButtons();
                 refresh = true;
             }
             function stopRefresh() {
-                clearTimeout(timeout);
+                clearTimeout(loopsend);
                 switchButtons();
                 refresh = false;
             }
 
+            function init() {
+                myWebSocket();
+            }
+            function myWebSocket() {
+                websocket = new WebSocket(wsUri);
+                websocket.onopen = function(evt) { 
+                    onOpen(evt)
+                    };
+                websocket.onclose = function(evt) {
+                    onClose(evt)
+                };
+                websocket.onmessage = function(evt) {
+                    onMessage(evt)
+                };
+                websocket.onerror = function(evt) {
+                    onError(evt)
+                };
+            }
+
+            function onClose(evt) {;} 
+            function onError(evt) {;}  
+            function onOpen(evt) {
+                loopsend = setInterval(function(){doSend("");}, 1000);
+            }  
+            function onMessage(evt) { 
+                writeToScreen(evt.data); 
+            }   
+            function doSend(message) { 
+                websocket.send(message); 
+            }  
+            function writeToScreen(message) { 
+                document.getElementById('receiving').innerHTML = message + document.getElementById('receiving').innerHTML;
+            }  
+            window.addEventListener("load", init, false);
+        </script>
+
+        <script>
             function reverseDisplay() {
                 if (refresh == true) {
-                    stopRefresh();
+                    // stopRefresh();
                 }
 
                 // get hidden data elements and make them display
@@ -119,6 +109,7 @@
     </head>
 
     <body> 
+        <button id="exit"        onclick="window.location.href='/exit'">Shutdown Server</button>
         <button id="stopRefresh" onclick="stopRefresh();"    >Stop Refreshing</button>
         <button id="setRefresh"  onclick="setRefresh();"     style="display: none;">Resume Refreshing</button>
         <button id="showhide"    onclick="reverseDisplay();" >Show / Hidden</button><br />
