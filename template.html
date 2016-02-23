@@ -22,7 +22,7 @@
 
         <script language="javascript" type="text/javascript">
             var refresh = true;
-            var loopsend;
+            var sendMessage;
             var wsUri = "ws://localhost:8080/ws";
             var websocket;
 
@@ -42,12 +42,12 @@
                 }
             }
             function setRefresh() {
-                loopsend = setInterval(function(){doSend("");}, 500);
+                sendMessage = setInterval(function(){doSend("");}, 1000);
                 switchButtons();
                 refresh = true;
             }
             function stopRefresh() {
-                clearTimeout(loopsend);
+                clearInterval(sendMessage);
                 switchButtons();
                 refresh = false;
             }
@@ -71,15 +71,19 @@
                 };
             }
 
-            function onClose(evt) {;} 
+            function onClose(evt) {
+                clearInterval(sendMessage);
+                init();
+            } 
             function onError(evt) {;}  
             function onOpen(evt) {
-                doSend("");
-                setRefresh();
+                sendMessage = setInterval(function(){doSend("interval");}, 1000);
             }  
             function onMessage(evt) { 
-                writeToScreen(evt.data); 
-            }   
+                if (evt.data != "") {
+                    writeToScreen(evt.data); 
+                }
+            } 
             function doSend(message) { 
                 websocket.send(message); 
             }  
@@ -91,10 +95,6 @@
 
         <script>
             function reverseDisplay() {
-                if (refresh == true) {
-                    // stopRefresh();
-                }
-
                 // get hidden data elements and make them display
                 var x = document.getElementsByClassName("hidden");
                 var i;
@@ -112,7 +112,7 @@
     <body> 
         <button id="exit"        onclick="window.location.href='/exit'">Shutdown Server</button>
         <button id="stopRefresh" onclick="stopRefresh();"    style="display: none;">Stop Refreshing</button>
-        <button id="setRefresh"  onclick="setRefresh();"     >Resume Refreshing</button>
+        <button id="setRefresh"  onclick="setRefresh();"     style="display: none;">Resume Refreshing</button>
         <button id="showhide"    onclick="reverseDisplay();" >Show / Hidden</button><br />
         <form method="POST">
         <table>

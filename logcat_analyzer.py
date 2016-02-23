@@ -16,7 +16,6 @@ if __name__ == '__main__':
     dataset_number = 0
 
     lp = SimpleAnalyzer()
-    k = 0
     cmd = ["adb", "logcat"]
     try: 
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, close_fds=True)
@@ -26,8 +25,7 @@ if __name__ == '__main__':
                 result = lp.parse_line(line)
                 if result.strip() != "":
                     print result
-                else:
-                    pass
+                    time.sleep(0.02)
 
                 # if any returned number, the server got shut down and we can stop this program
                 if pserver.poll() is not None:
@@ -35,10 +33,9 @@ if __name__ == '__main__':
 
                 # produce simple feedback file
                 sf = SimpleFeedback(lp.return_list(), lp.return_error(), "template.html", "fbtmp.html")
-                previous_dataset_number = dataset_number
                 if not os.path.isfile("fbtmp.html"):
+                    previous_dataset_number = dataset_number
                     dataset_number = sf.return_new_feedback(False, previous_dataset_number)
-                k = k + 1
 
     except KeyboardInterrupt:
        sys.stdout.flush()

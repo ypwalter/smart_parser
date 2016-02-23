@@ -1,4 +1,5 @@
 import re
+import time
 import urllib
 import os.path
 import tornado.autoreload
@@ -48,7 +49,10 @@ class WSHandler(tornado.websocket.WebSocketHandler):
             with open("fbtmp.html", "r") as infile:
                 self.write_message(infile.read())
             os.remove("fbtmp.html")
+        else:
+            self.write_message("")
         # print 'WebSocket received:', message
+        time.sleep(0.1)
 
     def on_close(self):
         pass
