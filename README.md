@@ -17,19 +17,24 @@ Proof of Concept: Making a basic library including "basic parser", "basic analyz
 It can return the information parsed.
 
 Basic Parser: simply parsing through the log
+
 Basic Analyzer: simply analyzing the error and warning message with rule based system
 
 Done 2016/02/16
 
 ### 2nd Phrase
 Proof of Concept: "Basic feedback system" and "basic logging of feedback"
+
 It can show you the information parsed in webpage and do some basic operating.
 
 Basic Feedback System: the html format is still basic, but this include websocket for updating information
+
 Basic Servers: httpd server and websocket server
+
 Basic Logging of Feedback: sqlite library for storing data
 
 Not yet finished. Planning to fix minor communication issues and webpage styling before 2016/03/04
+
 Google Slide: http://tinyurl.com/SmartParser
 
 ### 3rd Phrase
